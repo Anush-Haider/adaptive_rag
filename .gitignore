@@ -1,0 +1,51 @@
+# ==============================================================================
+# GITIGNORE FOR SELF-CORRECTING RAG AGENT (PYTHON + HUGGINGFACE + DOCKER)
+# ==============================================================================
+
+# --- Python Virtual Environments & Packages ---
+venv/
+.venv/
+env/
+bin/
+lib/
+lib64/
+include/
+share/
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+
+# --- Project-Specific Local Data & Storage ---
+# Do not push the local vector database files or indices
+.chroma_db/
+*.db
+
+# --- Secrets, Environment & Configurations ---
+# Contains your sensitive keys, custom provider definitions, etc.
+.env
+.env.local
+.env.*
+!.env.example
+
+# --- IDE & Editor Artifacts ---
+# PyCharm project settings cache
+.idea/
+# VS Code project settings cache
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# --- Docker Cache & Runtime Outputs ---
+.dockerprod
+docker-compose.override.yml
+*.log
+logs/
+
+# --- Operating System Clutter ---
+DS_Store
+Thumbs.db

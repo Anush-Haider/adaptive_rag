@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  rag-agent:
+    build: .
+    container_name: self_correcting_rag_agent
+    volumes:
+      # Persist your local Chroma Vector DB indices
+      - ./.chroma_db:/app/.chroma_db
+      # Persist downloaded Hugging Face model weights to prevent redownloads
+      - hf_model_cache:/root/.cache/huggingface
+    env_file:
+      - .env
+    environment:
+      - DEBUG=True
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+volumes:
+  hf_model_cache:
+    name: hf_model_cache

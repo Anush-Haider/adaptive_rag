@@ -1,0 +1,20 @@
+# --- Core Framework & Orchestration ---
+langgraph>=0.0.30
+langchain>=0.1.0
+langchain-core>=0.1.40
+langchain-community>=0.4.2
+# --- Open-Source Model Integrations ---
+langchain-ollama>=0.1.0
+langchain-groq>=0.1.0
+
+# --- Vector Database & Embeddings ---
+chromadb>=0.4.24
+sentence-transformers>=2.5.1
+
+# --- Fallback Tools & Services ---
+duckduckgo-search>=6.1.7
+
+# --- Configuration & Validation ---
+pydantic>=2.6.0
+pydantic-settings>=2.2.1
+python-dotenv>=1.0.1
