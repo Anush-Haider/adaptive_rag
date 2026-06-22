@@ -12,7 +12,8 @@ The core architecture operates as an explicit, directed acyclic pipeline control
 * **Log History Desynchronization Fix**: Unlike naive routing implementations that evaluate hallucinations *before* the evaluation node logs updates, this graph introduces linear synchronization: `generate_answer` $\rightarrow$ `check_hallucination` $\rightarrow$ `Conditional Router`. 
 * **State-Based Loop Breaker**: A deterministic guardrail inside `route_after_grading` monitors the `state["steps"]` execution trace. If the workflow attempts more than two web-search iterations due to local model parsing formatting drops, it forces a routing fallback to `generate_answer`, guaranteeing strict compute ceilings.
 
-** Core Dependencies **
+**Core Dependencies**
+
          Orchestration: LangGraph, LangChain Core
 
          Vector Database: ChromaDB (Embedded)
@@ -23,8 +24,8 @@ The core architecture operates as an explicit, directed acyclic pipeline control
 
          Configuration & Execution: Pydantic v2, Pydantic Settings
 
-🐳 Containerized Infrastructure & Deployment
+🐳 **Containerized Infrastructure & Deployment**
 The deployment pipeline is fully containerized, utilizing multi-stage volume caching strategies to isolate application operations, handle local databases, and preserve large AI model weights across container restarts.
 
-Prerequisites
+**Prerequisites**
 Docker Desktop or Docker Engine installed on the host machine.
