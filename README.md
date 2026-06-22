@@ -20,8 +20,7 @@ The core architecture operates as an explicit, directed acyclic pipeline control
          Configuration & Execution: Pydantic v2, Pydantic Settings
 
 🐳 **Containerized Infrastructure & Deployment**
-
-         The deployment pipeline is fully containerized, utilizing multi-stage volume caching strategies to isolate application operations, handle local                   databases, and preserve large AI model weights across container restarts.
+The deployment pipeline is fully containerized, utilizing multi-stage volume caching strategies to isolate application operations, handle local                   databases, and preserve large AI model weights across container restarts.
 
 **Prerequisites**
          Docker Desktop or Docker Engine installed on the host machine.
