@@ -15,7 +15,7 @@ The core architecture operates as an explicit, directed acyclic pipeline control
 **Core Dependencies**
          Orchestration: LangGraph, LangChain Core
          Vector Database: ChromaDB (Embedded)
-         LLM Engine: Hugging Face Transformers / Local Runtime (Qwen/Qwen2.5-1.5B-Instruct or Llama-3.2-1B-Instruct)
+         LLM Engine: Ollama / Local Runtime (Qwen/Qwen2.5-1.5B-Instruct or Llama-3.2-1B-Instruct)
          Web Scraper: duckduckgo-search
          Configuration & Execution: Pydantic v2, Pydantic Settings
 
