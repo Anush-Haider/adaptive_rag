@@ -12,49 +12,16 @@ The core architecture operates as an explicit, directed acyclic pipeline control
 * **Log History Desynchronization Fix**: Unlike naive routing implementations that evaluate hallucinations *before* the evaluation node logs updates, this graph introduces linear synchronization: `generate_answer` $\rightarrow$ `check_hallucination` $\rightarrow$ `Conditional Router`. 
 * **State-Based Loop Breaker**: A deterministic guardrail inside `route_after_grading` monitors the `state["steps"]` execution trace. If the workflow attempts more than two web-search iterations due to local model parsing formatting drops, it forces a routing fallback to `generate_answer`, guaranteeing strict compute ceilings.
 
-* [ User Query ]
-         │
-         ▼
-┌───────────────────┐
-│ retrieve_docum... │
-└─────────┬─────────┘
-│
-▼
-┌───────────────────┐        --- LOOP BREAKER MAX 2 TRIPS ---
-│  grade_documents  ├────────────────────────────────────────┐
-└─────────┬─────────┘                                        │
-│                                                  │
-(Docs Irrelevant)                                  (Docs Clean)
-│                                                  │
-▼                                                  ▼
-┌───────────────────┐                              ┌───────────────────┐
-│  transform_query  │                              │  generate_answer  │
-└─────────┬─────────┘                              └─────────┬─────────┘
-│                                                  │
-▼                                                  ▼
-┌───────────────────┐                              ┌───────────────────┐
-│execute_web_search │                              │check_hallucinati...│
-└─────────┬─────────┘                              └─────────┬─────────┘
-│                                                  │
-└───────────────────►   [ Useful ]  ◄──────────────┤ (Hallucinated)
-│                      │
-▼                      ▼
-┌───────────────────┐   ┌───────────────────┐
-│evaluate_answer_...│   │  transform_query  │
-└─────────┬─────────┘   └───────────────────┘
-│
-[ Useful=True ] ───► [[ END ]]
+** Core Dependencies **
+         Orchestration: LangGraph, LangChain Core
 
-Core Dependencies
-Orchestration: LangGraph, LangChain Core
+         Vector Database: ChromaDB (Embedded)
 
-Vector Database: ChromaDB (Embedded)
+         LLM Engine: Hugging Face Transformers / Local Runtime (Qwen/Qwen2.5-1.5B-Instruct or Llama-3.2-1B-Instruct)
 
-LLM Engine: Hugging Face Transformers / Local Runtime (Qwen/Qwen2.5-1.5B-Instruct or Llama-3.2-1B-Instruct)
+         Web Scraper: duckduckgo-search
 
-Web Scraper: duckduckgo-search
-
-Configuration & Execution: Pydantic v2, Pydantic Settings
+         Configuration & Execution: Pydantic v2, Pydantic Settings
 
 🐳 Containerized Infrastructure & Deployment
 The deployment pipeline is fully containerized, utilizing multi-stage volume caching strategies to isolate application operations, handle local databases, and preserve large AI model weights across container restarts.
