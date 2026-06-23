@@ -1,26 +1,24 @@
-# Stateful Self-Correcting Graph RAG Agent
+# Enterprise Adaptive RAG (Retrieval-Augmented Generation) Pipeline 🧠
 
-An enterprise-grade, stateful Retrieval-Augmented Generation (RAG) agent engineered with **LangGraph** and **FastAPI**. The system implements an asynchronous, self-correcting state machine workflow utilizing local open-source Large Language Models (LLMs) via Hugging Face Transformers, supported by an optimized vector database index and automated web-search fallbacks.
+An advanced, production-ready document orchestration and retrieval engine that implements an **Adaptive RAG architecture**. 
 
----
+Unlike static RAG systems, this pipeline uses an intelligent LLM classifier router to dynamically analyze user queries, determine the optimal retrieval strategy (Vector Store Search, Live Web Scraping, or Direct LLM Generation), and self-correct retrieval gaps using automated query-rewriting loops.
 
-## 🛠️ Architectural Blueprint
+## 🏗️ Systems Architecture & Decision Flow
 
-The core architecture operates as an explicit, directed acyclic pipeline controlled by a LangGraph state machine runtime. The application decouples operational nodes from conditional evaluation gates to ensure complete code traceability.
-
-### Advanced System Safeguards
-* **Log History Desynchronization Fix**: Unlike naive routing implementations that evaluate hallucinations *before* the evaluation node logs updates, this graph introduces linear synchronization: `generate_answer` $\rightarrow$ `check_hallucination` $\rightarrow$ `Conditional Router`. 
-* **State-Based Loop Breaker**: A deterministic guardrail inside `route_after_grading` monitors the `state["steps"]` execution trace. If the workflow attempts more than two web-search iterations due to local model parsing formatting drops, it forces a routing fallback to `generate_answer`, guaranteeing strict compute ceilings.
-
-**Core Dependencies**
-         Orchestration: LangGraph, LangChain Core
-         Vector Database: ChromaDB (Embedded)
-         LLM Engine: Ollama / Local Runtime (Qwen/Qwen2.5-1.5B-Instruct or Llama-3.2-1B-Instruct)
-         Web Scraper: duckduckgo-search
-         Configuration & Execution: Pydantic v2, Pydantic Settings
-
-🐳 **Containerized Infrastructure & Deployment**
-The deployment pipeline is fully containerized, utilizing multi-stage volume caching strategies to isolate application operations, handle local                   databases, and preserve large AI model weights across container restarts.
-
-**Prerequisites**
-         Docker Desktop or Docker Engine installed on the host machine.
+```mermaid
+graph TD
+    A[User Query] --> B[FastAPI Endpoint / Entrypoint]
+    B --> C[Adaptive LLM Router / LiteLLM]
+    
+    C -->|Complex / Real-Time Query| D[scrapper.py / Async Search Ingestion]
+    C -->|Domain-Specific Knowledge| E[pipeline.py / Semantic Retriever]
+    C -->|Conversational / General Context| F[Direct Response Generation]
+    
+    E -->|Context Ingestion| G[(ChromaDB / Vector Store)]
+    D -->|Web Scraping Data| G
+    
+    G --> H[Evaluator Loop / Agentic Validation]
+    H -->|Is Context Sufficient? Yes| I[Final Multi-Model Generation]
+    H -->|Is Context Insufficient? No| J[Query-Rewriting Engine]
+    J -->|Refetched Query| C
