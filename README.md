@@ -22,6 +22,7 @@ graph TD
     H -->|Is Context Sufficient? Yes| I[Final Multi-Model Generation]
     H -->|Is Context Insufficient? No| J[Query-Rewriting Engine]
     J -->|Refetched Query| C
+```
 
 🛠️ **Tech Stack & Engineering Choices**
 Dynamic Routing Layer: Built with LiteLLM and LangChain to evaluate queries and orchestrate multi-agent decision loops. LiteLLM provides seamless failover abstractions across model endpoints (GPT-4, Claude, Gemini, Llama3).
